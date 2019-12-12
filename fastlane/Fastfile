@@ -1,0 +1,8 @@
+lane :test do
+  zealot(
+    endpoint: 'http://localhost:3000',
+    token: '...',
+    channel_key: '...',
+    file: 'app.apk'
+  )
+end
