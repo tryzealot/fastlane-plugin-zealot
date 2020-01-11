@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fastlane_core/ui/ui'
 
 module Fastlane
@@ -5,12 +7,52 @@ module Fastlane
 
   module Helper
     module ZealotHelper
+      def upload_app(params)
+        form = upload_app_params(params)
+        print_table(form, title: 'zealot', hidden_keys: [:token])
+
+        endpoint = params[:endpoint]
+        UI.success("Uploading to #{endpoint} ...")
+        connection = make_connection(params[:endpoint], params[:verify_ssl])
+        connection.post do |req|
+          req.url('/api/apps/upload')
+          req.options.timeout = params[:timeout]
+          req.body = form
+        end
+      rescue Faraday::Error::TimeoutError
+        show_error('Uploading build to Apphost timed out ⏳', params[:fail_on_error])
+      end
+
+      def upload_app_params(params)
+        form = {
+          token: params[:token],
+          channel_key: params[:channel_key],
+          file: Faraday::UploadIO.new(params[:file], 'application/octet-stream')
+        }
+
+        form.merge(avialable_upload_app_params(params))
+      end
+
+      UPLOAD_APP_PARAMS_KEYS = %w[
+        name changelog release_type
+        slug source branch git_commit password
+      ].freeze
+
+      def avialable_upload_app_params(params)
+        UPLOAD_APP_PARAMS_KEYS.each_with_object({}) do |key, obj|
+          value = params.fetch(key.to_sym, ask: false)
+          obj[key.to_sym] = value if value && !value.empty?
+        end
+      end
+
+      #####################################
+
       def check_app_version(params)
         query = build_app_version_check_params(params)
         print_table(query, title: 'zealot_version_check', hidden_keys: ['token'])
 
         UI.success("Checking app version from Zealot ...")
-        connection = make_connection(params[:endpoint])
+        connection = make_connection(params[:endpoint], params[:verify_ssl])
         connection.get do |req|
           req.url '/api/apps/version_exist'
           req.params = query
@@ -51,11 +93,13 @@ module Fastlane
         end
       end
 
-      def make_connection(endpoint)
+      #####################################
+
+      def make_connection(endpoint, verify_ssl = true)
         require 'faraday'
         require 'faraday_middleware'
 
-        Faraday.new(url: endpoint) do |builder|
+        Faraday.new(url: endpoint, ssl: { verify: verify_ssl }) do |builder|
           builder.request(:multipart)
           builder.request(:url_encoded)
           builder.request(:retry, max: 3, interval: 5)
@@ -69,6 +113,7 @@ module Fastlane
         rows.keys.each do |k|
           rows.delete(k) if remove_empty_value && !rows[k]
           rows.delete(k) if hidden_keys.include?(k.to_s)
+          rows[k] = rows[k].path if rows[k].is_a?(UploadIO)
         end
         puts Terminal::Table.new(
           title: "Summary for #{title} #{Fastlane::Zealot::VERSION}".green,

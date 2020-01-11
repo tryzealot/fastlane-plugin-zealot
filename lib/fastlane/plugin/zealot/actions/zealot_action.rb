@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fastlane/action'
 require_relative '../helper/zealot_helper'
 
@@ -10,50 +12,20 @@ module Fastlane
     end
 
     class ZealotAction < Action
+      extend Fastlane::Helper::ZealotHelper
+
       def self.run(params)
-        upload_url = params[:endpoint]
-        timeout = params[:timeout]
-        verify_ssl = params[:verify_ssl]
+        endpoint = params[:endpoint]
         fail_on_error = params[:fail_on_error]
-        form = build_params(params)
 
-        # Dump request form
-        print_table(form, params[:hide_user_token])
-
-        response = upload(upload_url, form, timeout, fail_on_error)
-        if parse_response(response, upload_url, fail_on_error)
+        response = upload_app(params)
+        if parse_response(response, endpoint, fail_on_error)
+          UI.success('Build successfully uploaded to Zealot.')
           UI.success("Release URL: #{Actions.lane_context[SharedValues::ZEALOT_RELEASE_URL]}")
           UI.success("QRCode URL: #{Actions.lane_context[SharedValues::ZEALOT_QRCODE_URL]}")
           UI.success("Download URL: #{Actions.lane_context[SharedValues::ZEALOT_INSTALL_URL]}")
-          UI.success('Build successfully uploaded to Zealot.')
         end
       end
-
-      def self.upload(upload_url, form, timeout, verify_ssl, fail_on_error)
-        require 'faraday'
-        require 'faraday_middleware'
-
-        UI.success("Uploading to #{upload_url} ...")
-        connection = Faraday.new(url: upload_url, { ssl: { verify: verify_ssl } }) do |builder|
-          builder.request(:multipart)
-          builder.request(:url_encoded)
-          builder.request(:retry, max: 3, interval: 5)
-          builder.response(:json, content_type: /\bjson$/)
-          builder.use(FaradayMiddleware::FollowRedirects)
-          builder.adapter(:net_http)
-        end
-
-        begin
-          connection.post do |req|
-            req.url('/api/apps/upload')
-            req.options.timeout = timeout
-            req.body = form
-          end
-        rescue Faraday::Error::TimeoutError
-          show_error('Uploading build to Apphost timed out ⏳', fail_on_error)
-        end
-      end
-      private_class_method :upload
 
       def self.parse_response(response, upload_url, fail_on_error)
         return show_error("Error uploading to Apphost: empty response", fail_on_error) unless response
@@ -71,51 +43,6 @@ module Fastlane
         true
       end
       private_class_method :parse_response
-
-      def self.build_params(params)
-        form = {
-          token: params[:token],
-          channel_key: params[:channel_key],
-          file: Faraday::UploadIO.new(params[:file], 'application/octet-stream')
-        }
-
-        form.merge(avialable_params(params))
-      end
-      private_class_method :build_params
-
-      UPLOAD_PARAMS_KEYS = %w[
-        name changelog release_type
-        slug source branch git_commit password
-      ].freeze
-
-      def self.avialable_params(params)
-        UPLOAD_PARAMS_KEYS.each_with_object({}) do |key, obj|
-          value = params.fetch(key.to_sym, ask: false)
-          obj[key.to_sym] = value if value && !value.empty?
-        end
-      end
-      private_class_method :avialable_params
-
-      def self.print_table(form, hide_user_token)
-        rows = form.dup
-        rows[:file] = rows[:file].path if rows[:file]
-        rows[:token] = '*' * 10 if hide_user_token
-        puts Terminal::Table.new(
-          title: "Summary for zealot #{Fastlane::Zealot::VERSION}".green,
-          rows: rows
-        )
-      end
-
-      def self.show_error(message, fail_on_error)
-        if fail_on_error
-          UI.user_error!(message)
-        else
-          UI.error(message)
-        end
-
-        false
-      end
-      private_class_method :show_error
 
       #####################################################
       # @!group Documentation
@@ -210,7 +137,7 @@ module Fastlane
                                        description: 'Should verify SSL of zealot service',
                                        optional: true,
                                        default_value: true,
-                                       type: Boolean)
+                                       type: Boolean),
           FastlaneCore::ConfigItem.new(key: :fail_on_error,
                                        env_name: 'ZEALOT_FAIL_ON_ERROR',
                                        description: 'Should an error uploading app cause a failure',
