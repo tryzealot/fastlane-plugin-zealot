@@ -13,6 +13,7 @@ module Fastlane
       def self.run(params)
         upload_url = params[:endpoint]
         timeout = params[:timeout]
+        verify_ssl = params[:verify_ssl]
         fail_on_error = params[:fail_on_error]
         form = build_params(params)
 
@@ -28,12 +29,12 @@ module Fastlane
         end
       end
 
-      def self.upload(upload_url, form, timeout, fail_on_error)
+      def self.upload(upload_url, form, timeout, verify_ssl, fail_on_error)
         require 'faraday'
         require 'faraday_middleware'
 
         UI.success("Uploading to #{upload_url} ...")
-        connection = Faraday.new(url: upload_url) do |builder|
+        connection = Faraday.new(url: upload_url, { ssl: { verify: verify_ssl } }) do |builder|
           builder.request(:multipart)
           builder.request(:url_encoded)
           builder.request(:retry, max: 3, interval: 5)
@@ -203,10 +204,16 @@ module Fastlane
                                        description: 'replase user token to *** to keep secret',
                                        optional: true,
                                        default_value: true,
-                                       type: Boolean,),
+                                       type: Boolean),
+          FastlaneCore::ConfigItem.new(key: :verify_ssl,
+                                       env_name: 'ZEALOT_VERIFY_SSL',
+                                       description: 'Should verify SSL of zealot service',
+                                       optional: true,
+                                       default_value: true,
+                                       type: Boolean)
           FastlaneCore::ConfigItem.new(key: :fail_on_error,
                                        env_name: 'ZEALOT_FAIL_ON_ERROR',
-                                       description: 'Should an error uploading app cause a failure? (true/false)',
+                                       description: 'Should an error uploading app cause a failure',
                                        optional: true,
                                        default_value: false,
                                        type: Boolean)
