@@ -28,12 +28,12 @@ module Fastlane
       end
 
       def self.parse_response(response, upload_url, fail_on_error)
-        return show_error("Error uploading to Apphost: empty response", fail_on_error) unless response
+        return show_error("Error uploading to Zealot: empty response", fail_on_error) unless response
 
         UI.verbose response.body.to_s
 
         if (body = response.body) && (error = body['error'])
-          return show_error("Error uploading to Apphost: #{response.body}", fail_on_error)
+          return show_error("Error uploading to Zealot: #{response.body}", fail_on_error)
         end
 
         Actions.lane_context[SharedValues::ZEALOT_RELEASE_URL] = body['release_url']

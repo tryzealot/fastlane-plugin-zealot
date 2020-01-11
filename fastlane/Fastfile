@@ -1,20 +1,10 @@
 lane :version_check do
-  # zealot_version_check(
-  #   endpoint: 'http://localhost:3000',
-  #   token: '...',
-  #   bundle_id: 'com.example.app.name'
-  #   release_version: '1.0.0',
-  #   build_version: '1'
-  # )
-
   zealot_version_check(
     endpoint: 'http://localhost:3000',
-    token: '320bacf980e20e7b058be2d77154dc53',
-    channel_key: '5baef6bd0a85e7d4bb5a98bfedd163c8',
-    bundle_id: 'com.haohaozhu.hhz',
-    git_commit: '12345678'
-    # release_version: '4.1.1',
-    # build_version: '10291524'
+    token: '...',
+    bundle_id: 'com.example.app.name'
+    release_version: '1.0.0',
+    build_version: '1'
   )
 end
 
@@ -27,11 +17,11 @@ lane :upload_app do
   )
 end
 
-lane :upload_debug_file do
-  zealot_debug_file(
-    endpoint: 'http://localhost:3000',
-    token: '...',
-    channel_key: '...',
-    file: 'app.apk'
-  )
-end
+# lane :upload_debug_file do
+#   zealot_debug_file(
+#     endpoint: 'http://localhost:3000',
+#     token: '...',
+#     channel_key: '...',
+#     file: 'app.apk'
+#   )
+# end
