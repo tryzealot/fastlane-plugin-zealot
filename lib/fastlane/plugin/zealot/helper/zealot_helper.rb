@@ -7,6 +7,36 @@ module Fastlane
 
   module Helper
     module ZealotHelper
+      def upload_debug_file(params, file)
+        form = upload_debug_file_params(params, file)
+        print_table(form, title: 'zealot_debug_file')
+
+        endpoint = params[:endpoint]
+        UI.success("Uploading to #{endpoint} ...")
+        connection = make_connection(params[:endpoint], params[:verify_ssl])
+        begin
+          connection.post do |req|
+            req.url('/api/debug_files/upload')
+            req.options.timeout = params[:timeout]
+            req.body = form
+          end
+        rescue Faraday::Error::TimeoutError
+          show_error('Uploading build to Zealot timed out ⏳', params[:fail_on_error])
+        end
+      end
+
+      def upload_debug_file_params(params, file)
+        {
+          token: params[:token],
+          channel_key: params[:channel_key],
+          release_version: params[:release_version],
+          build_version: params[:build_version],
+          file: Faraday::UploadIO.new(file, 'application/octet-stream')
+        }
+      end
+
+      #######################################
+
       def upload_app(params)
         form = upload_app_params(params)
         print_table(form, title: 'zealot', hidden_keys: [:token])

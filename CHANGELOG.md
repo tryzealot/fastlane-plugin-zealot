@@ -4,7 +4,7 @@
 
 > 如下罗列的变更是还未发布的列表
 
-## 新增
+### 新增
 
 - 新增 zealot action
 - 新增 zealot_version_check action
