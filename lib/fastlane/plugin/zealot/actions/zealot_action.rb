@@ -109,6 +109,7 @@ module Fastlane
                                        env_name: 'ZEALOT_GIT_COMMIT',
                                        description: 'The hash of git commit',
                                        optional: true,
+                                       default_value: ENV['GIT_COMMIT'] || ENV['CI_COMMIT_SHA'],
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :password,
                                        env_name: 'ZEALOT_PASSWORD',
