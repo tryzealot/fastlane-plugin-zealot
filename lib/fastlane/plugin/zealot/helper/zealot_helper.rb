@@ -67,13 +67,14 @@ module Fastlane
       end
 
       UPLOAD_APP_PARAMS_KEYS = %w[
-        name changelog release_type
-        slug source branch git_commit password
+        name changelog release_type slug branch
+        source git_commit password custom_fields
       ].freeze
 
       def avialable_upload_app_params(params)
         UPLOAD_APP_PARAMS_KEYS.each_with_object({}) do |key, obj|
           value = params.fetch(key.to_sym, ask: false)
+          value = JSON.dump(value) if key == 'custom_fields'
           obj[key.to_sym] = value if value && !value.empty?
         end
       end
