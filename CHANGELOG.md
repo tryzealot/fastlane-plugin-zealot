@@ -16,7 +16,7 @@
 
 - 修复传参 hidden_user_token 无效
 
-## [0.1.0] (2020-01-11)
+## 0.1.0 (2020-01-11)
 
 ### 新增
 
@@ -25,6 +25,6 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.0...HEAD
+[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.0...v0.2.0
 
