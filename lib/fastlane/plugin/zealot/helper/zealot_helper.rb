@@ -42,7 +42,7 @@ module Fastlane
         # recommand generate collect changelog plugin: https://github.com/icyleaf/fastlane-plugin-ci_changelog
         form[:changelog] = changelog_raw if changelog_raw = ENV['CICL_CHANGLOG']
 
-        print_table(form, title: 'zealot', hidden_keys: [:token])
+        print_table(form, title: 'zealot', hidden_keys: hidden_keys(params))
 
         endpoint = params[:endpoint]
         UI.success("Uploading to #{endpoint} ...")
@@ -67,13 +67,14 @@ module Fastlane
       end
 
       UPLOAD_APP_PARAMS_KEYS = %w[
-        name changelog release_type
-        slug source branch git_commit password
+        name changelog release_type slug branch
+        source git_commit password custom_fields
       ].freeze
 
       def avialable_upload_app_params(params)
         UPLOAD_APP_PARAMS_KEYS.each_with_object({}) do |key, obj|
           value = params.fetch(key.to_sym, ask: false)
+          value = JSON.dump(value) if key == 'custom_fields' && value
           obj[key.to_sym] = value if value && !value.empty?
         end
       end
@@ -82,7 +83,7 @@ module Fastlane
 
       def check_app_version(params)
         query = build_app_version_check_params(params)
-        print_table(query, title: 'zealot_version_check', hidden_keys: ['token'])
+        print_table(query, title: 'zealot_version_check', hidden_keys: hidden_keys(params))
 
         UI.success("Checking app version from Zealot ...")
         connection = make_connection(params[:endpoint], params[:verify_ssl])
@@ -145,7 +146,7 @@ module Fastlane
         rows = form.dup
         rows.keys.each do |k|
           rows.delete(k) if remove_empty_value && !rows[k]
-          rows.delete(k) if hidden_keys.include?(k.to_s)
+          rows.delete(k) if hidden_keys.include?(k.to_sym)
           rows[k] = rows[k].path if rows[k].is_a?(UploadIO)
         end
         puts Terminal::Table.new(
@@ -162,6 +163,12 @@ module Fastlane
         end
 
         false
+      end
+
+      def hidden_keys(params)
+        return [] unless params[:hide_user_token]
+
+        [:token]
       end
     end
   end

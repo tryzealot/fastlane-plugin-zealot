@@ -18,9 +18,6 @@ module Fastlane
         response = upload_debug_file(params, file)
         if parse_response(response, params[:endpoint], params[:fail_on_error])
           UI.success('Build successfully uploaded to Zealot.')
-          # UI.success("Release URL: #{Actions.lane_context[SharedValues::ZEALOT_RELEASE_URL]}")
-          # UI.success("QRCode URL: #{Actions.lane_context[SharedValues::ZEALOT_QRCODE_URL]}")
-          # UI.success("Download URL: #{Actions.lane_context[SharedValues::ZEALOT_INSTALL_URL]}")
         end
       end
 
@@ -68,10 +65,6 @@ module Fastlane
         if (body = response.body) && (error = body['error'])
           return show_error("Error uploading to Zealot: #{response.body}", fail_on_error)
         end
-
-        # Actions.lane_context[SharedValues::ZEALOT_RELEASE_URL] = body['release_url']
-        # Actions.lane_context[SharedValues::ZEALOT_INSTALL_URL] = body['install_url']
-        # Actions.lane_context[SharedValues::ZEALOT_QRCODE_URL] = body['qrcode_url']
 
         true
       end
