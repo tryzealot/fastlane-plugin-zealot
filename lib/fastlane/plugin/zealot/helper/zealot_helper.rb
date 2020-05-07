@@ -20,6 +20,8 @@ module Fastlane
             req.options.timeout = params[:timeout]
             req.body = form
           end
+        rescue Faraday::ConnectionFailed
+          show_error('Can not connecting to Zealot', params[:fail_on_error])
         rescue Faraday::Error::TimeoutError
           show_error('Uploading build to Zealot timed out ⏳', params[:fail_on_error])
         end
@@ -52,6 +54,8 @@ module Fastlane
           req.options.timeout = params[:timeout]
           req.body = form
         end
+      rescue Faraday::ConnectionFailed
+        show_error('Can not connecting to Zealot', params[:fail_on_error])
       rescue Faraday::Error::TimeoutError
         show_error('Uploading build to Apphost timed out ⏳', params[:fail_on_error])
       end
@@ -91,6 +95,8 @@ module Fastlane
           req.url '/api/apps/version_exist'
           req.params = query
         end
+      rescue Faraday::ConnectionFailed
+        show_error('Can not connecting to Zealot', params[:fail_on_error])
       rescue Faraday::Error::TimeoutError
         show_error('Check app version from Zealot timed out ⏳', params[:fail_on_error])
       end
@@ -155,7 +161,9 @@ module Fastlane
         )
       end
 
-      def show_error(message, fail_on_error)
+      def show_error(message, fail_on_error, store_shared_value = true)
+        Actions.lane_context[SharedValues::ZEAALOT_ERROR_MESSAGE] = message if store_shared_value
+
         if fail_on_error
           UI.user_error!(message)
         else
