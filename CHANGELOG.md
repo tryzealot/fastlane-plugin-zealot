@@ -4,13 +4,29 @@
 
 > 如下罗列的变更是还未发布的列表
 
+## [0.2.1] (2020-05-07)
+
+### 变更
+
+- [action] `zealot_version_check` SharedValues 键 **ZEALOT_APP_VERSION_EXISTED** 改名为 **ZEALOT_VERSION_EXISTED**
+
+### 新增
+
+- [action] `zealot` 新增 **ZEALOT_APP_ID**, **ZEALOT_RELEASE_ID**, **ZEAALOT_ERROR_MESSAGE** SharedValues (**需 Zealot 在 2020-05-07 之后版本有效**)
+- [action] `zealot_debug_file` 和 `zealot_version_check` 新增 **ZEAALOT_ERROR_MESSAGE** SharedValues
+
+### 修复
+
+- [action] 所有 actions 增加对网络连接失败的报错处理
+- [action] 修复在执行 `fastlane action xxxx` 无法显示 Output Variables
+
 ## [0.2.0] (2020-04-28)
 
 ### 新增
 
-- [action] 新增 zealot_debug_file action: 上传 iOS dSYM 或 Android Proguard
-- [action] zealot 增加自动获取 Git 分支名、Commit Hash(SHA) 和自动变更日志
-- [action] zealot 上传支持传递自定义键值对(key-value) (**需 Zealot 在 2020-04-16 之后版本有效**)
+- [action] 新增 `zealot_debug_file` action: 上传 iOS dSYM 或 Android Proguard
+- [action] `zealot` 增加自动获取 Git 分支名、Commit Hash(SHA) 和自动变更日志
+- [action] `zealot` 上传支持传递自定义键值对(key-value) (**需 Zealot 在 2020-04-16 之后版本有效**)
 
 ### 修复
 
@@ -20,8 +36,8 @@
 
 ### 新增
 
-- 新增 zealot action: 上传 iOS ipa 或 Android apk
-- 新增 zealot_version_check action: 检查 Zealot 是否已经存在版本，减少不必要的上传
+- 新增 `zealot` action: 上传 iOS ipa 或 Android apk
+- 新增 `zealot_version_check` action: 检查 Zealot 是否已经存在版本，减少不必要的上传
 
 ## [未发布]
 
