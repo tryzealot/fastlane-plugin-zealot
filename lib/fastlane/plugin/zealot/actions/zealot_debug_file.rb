@@ -186,11 +186,7 @@ module Fastlane
 
       def self.output
         [
-          [
-            'ZEALOT_RELEASE_URL', 'The release URL of the newly uploaded build',
-            'ZEALOT_INSTALL_URL', 'The install URL of the newly uploaded build',
-            'ZEALOT_QRCODE_URL', 'The QRCode URL of the newly uploaded build'
-          ]
+          ['ZEAALOT_ERROR_MESSAGE', 'The error message during upload process']
         ]
       end
 

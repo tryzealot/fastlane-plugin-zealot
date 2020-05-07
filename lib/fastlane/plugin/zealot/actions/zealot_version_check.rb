@@ -6,7 +6,7 @@ require_relative '../helper/zealot_helper'
 module Fastlane
   module Actions
     module SharedValues
-      ZEALOT_APP_VERSION_EXISTED = :ZEALOT_APP_VERSION_EXISTED
+      ZEALOT_VERSION_EXISTED = :ZEALOT_VERSION_EXISTED
     end
 
     class ZealotVersionCheckAction < Action
@@ -28,7 +28,7 @@ module Fastlane
 
         return show_error(response.body['error'], fail_on_error) if is_existed.nil?
 
-        Actions.lane_context[SharedValues::ZEALOT_APP_VERSION_EXISTED] = is_existed
+        Actions.lane_context[SharedValues::ZEALOT_VERSION_EXISTED] = is_existed
 
         if is_existed
           UI.important 'Found app version, you can skip upload it'
@@ -123,9 +123,8 @@ module Fastlane
 
       def self.output
         [
-          [
-            'ZEALOT_APP_VERSION_EXISTED', 'The result of app verison existed (Boolean)'
-          ]
+          ['ZEALOT_VERSION_EXISTED', 'The result of app verison existed (Boolean)'],
+          ['ZEAALOT_ERROR_MESSAGE', 'The error message during upload process']
         ]
       end
 

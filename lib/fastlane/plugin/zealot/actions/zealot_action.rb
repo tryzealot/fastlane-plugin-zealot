@@ -6,9 +6,12 @@ require_relative '../helper/zealot_helper'
 module Fastlane
   module Actions
     module SharedValues
+      ZEALOT_APP_ID = :ZEALOT_APP_ID
+      ZEALOT_RELEASE_ID = :ZEALOT_RELEASE_ID
       ZEALOT_RELEASE_URL = :ZEALOT_RELEASE_URL
       ZEALOT_QRCODE_URL = :ZEALOT_QRCODE_URL
       ZEALOT_INSTALL_URL = :ZEALOT_INSTALL_URL
+      ZEAALOT_ERROR_MESSAGE = :ZEAALOT_ERROR_MESSAGE
     end
 
     class ZealotAction < Action
@@ -32,10 +35,16 @@ module Fastlane
 
         UI.verbose response.body.to_s
 
+        if response.status != 201
+          return show_error("Error uploading to Zealot [#{response.status}]: #{response.body}", fail_on_error)
+        end
+
         if (body = response.body) && (error = body['error'])
           return show_error("Error uploading to Zealot: #{response.body}", fail_on_error)
         end
 
+        Actions.lane_context[SharedValues::ZEALOT_APP_ID] = body['app']['id']
+        Actions.lane_context[SharedValues::ZEALOT_RELEASE_ID] = body['id']
         Actions.lane_context[SharedValues::ZEALOT_RELEASE_URL] = body['release_url']
         Actions.lane_context[SharedValues::ZEALOT_INSTALL_URL] = body['install_url']
         Actions.lane_context[SharedValues::ZEALOT_QRCODE_URL] = body['qrcode_url']
@@ -177,11 +186,12 @@ module Fastlane
 
       def self.output
         [
-          [
-            'ZEALOT_RELEASE_URL', 'The release URL of the newly uploaded build',
-            'ZEALOT_INSTALL_URL', 'The install URL of the newly uploaded build',
-            'ZEALOT_QRCODE_URL', 'The QRCode URL of the newly uploaded build'
-          ]
+          ['ZEALOT_APP_ID', 'The id of app'],
+          ['ZEALOT_RELEASE_ID', 'The id of app\'s release'],
+          ['ZEALOT_RELEASE_URL', 'The release URL of the newly uploaded build'],
+          ['ZEALOT_INSTALL_URL', 'The install URL of the newly uploaded build'],
+          ['ZEALOT_QRCODE_URL', 'The QRCode URL of the newly uploaded build'],
+          ['ZEAALOT_ERROR_MESSAGE', 'The error message during upload process'],
         ]
       end
 
