@@ -162,7 +162,7 @@ module Fastlane
       end
 
       def show_error(message, fail_on_error, store_shared_value = true)
-        Actions.lane_context[SharedValues::ZEAALOT_ERROR_MESSAGE] = message if store_shared_value
+        Actions.lane_context[Fastlane::Actions::SharedValues::ZEAALOT_ERROR_MESSAGE] = message if store_shared_value
 
         if fail_on_error
           UI.user_error!(message)

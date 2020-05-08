@@ -6,6 +6,10 @@ require 'fastlane/plugin/debug_file'
 
 module Fastlane
   module Actions
+    module SharedValues
+      ZEAALOT_ERROR_MESSAGE = :ZEAALOT_ERROR_MESSAGE
+    end
+
     class ZealotDebugFileAction < Action
       extend Fastlane::Helper::ZealotHelper
 
