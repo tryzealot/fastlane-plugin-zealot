@@ -22,7 +22,7 @@ module Fastlane
           end
         rescue Faraday::ConnectionFailed
           show_error('Can not connecting to Zealot', params[:fail_on_error])
-        rescue Faraday::Error::TimeoutError
+        rescue Faraday::TimeoutError
           show_error('Uploading build to Zealot timed out ⏳', params[:fail_on_error])
         end
       end
@@ -56,7 +56,7 @@ module Fastlane
         end
       rescue Faraday::ConnectionFailed
         show_error('Can not connecting to Zealot', params[:fail_on_error])
-      rescue Faraday::Error::TimeoutError
+      rescue Faraday::TimeoutError
         show_error('Uploading build to Apphost timed out ⏳', params[:fail_on_error])
       end
 
@@ -97,7 +97,7 @@ module Fastlane
         end
       rescue Faraday::ConnectionFailed
         show_error('Can not connecting to Zealot', params[:fail_on_error])
-      rescue Faraday::Error::TimeoutError
+      rescue Faraday::TimeoutError
         show_error('Check app version from Zealot timed out ⏳', params[:fail_on_error])
       end
 
