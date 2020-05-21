@@ -4,19 +4,7 @@
 
 > 如下罗列的变更是还未发布的列表
 
-## [0.2.3] (2020-05-21)
-
-### 修复
-
-- [action] 修复 Ruby 报的重复定义 `Fastlane::Actions::SharedValues::ZEAALOT_ERROR_MESSAGE` 错误
-
-## [0.2.2] (2020-05-20)
-
-### 修复
-
-- [action] 由于 fastlane 依赖的 faraday 升级至 1.0+ 造成 API 变更错误
-
-## [0.2.1] (2020-05-07)
+## [0.3.0] (2020-05-21)
 
 ### 变更
 
@@ -31,6 +19,8 @@
 
 - [action] 所有 actions 增加对网络连接失败的报错处理
 - [action] 修复在执行 `fastlane action xxxx` 无法显示 Output Variables
+- [action] 修复 Ruby 报的重复定义 `Fastlane::Actions::SharedValues::ZEAALOT_ERROR_MESSAGE` 错误
+- [action] 由于 fastlane 依赖的 faraday 升级至 1.0+ 造成 API 变更错误
 
 ## [0.2.0] (2020-04-28)
 
@@ -53,8 +43,6 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.3...HEAD
-[0.2.3]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.2...v0.2.3
-[0.2.2]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.1...v0.2.2
-[0.2.1]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...v0.2.1
+[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.0...v0.2.0

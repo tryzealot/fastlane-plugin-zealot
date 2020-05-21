@@ -57,7 +57,7 @@ module Fastlane
       rescue Faraday::ConnectionFailed
         show_error('Can not connecting to Zealot', params[:fail_on_error])
       rescue Faraday::TimeoutError
-        show_error('Uploading build to Apphost timed out ⏳', params[:fail_on_error])
+        show_error('Uploading build to Zealot timed out ⏳', params[:fail_on_error])
       end
 
       def upload_app_params(params)
@@ -155,6 +155,7 @@ module Fastlane
           rows.delete(k) if hidden_keys.include?(k.to_sym)
           rows[k] = rows[k].path if rows[k].is_a?(UploadIO)
         end
+
         puts Terminal::Table.new(
           title: "Summary for #{title} #{Fastlane::Zealot::VERSION}".green,
           rows: rows
