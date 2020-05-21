@@ -7,7 +7,6 @@ module Fastlane
   module Actions
     module SharedValues
       ZEALOT_VERSION_EXISTED = :ZEALOT_VERSION_EXISTED
-      ZEAALOT_ERROR_MESSAGE = :ZEAALOT_ERROR_MESSAGE
     end
 
     class ZealotVersionCheckAction < Action
