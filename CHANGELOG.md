@@ -4,6 +4,12 @@
 
 > 如下罗列的变更是还未发布的列表
 
+## [0.4.0] (2020-05-22)
+
+### 新增
+
+- [action] `zealot` 新增自动获取上传渠道及 CI URL 逻辑
+
 ## [0.3.0] (2020-05-21)
 
 ### 变更
@@ -43,6 +49,7 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...HEAD
+[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.0...v0.2.0
