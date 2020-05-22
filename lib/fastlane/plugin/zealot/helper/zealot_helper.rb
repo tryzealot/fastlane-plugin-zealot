@@ -46,6 +46,7 @@ module Fastlane
 
         print_table(form, title: 'zealot', hidden_keys: hidden_keys(params))
 
+        exit 1
         endpoint = params[:endpoint]
         UI.success("Uploading to #{endpoint} ...")
         connection = make_connection(params[:endpoint], params[:verify_ssl])
@@ -71,14 +72,16 @@ module Fastlane
       end
 
       UPLOAD_APP_PARAMS_KEYS = %w[
-        name changelog release_type slug branch
-        source git_commit password custom_fields
+        name changelog release_type slug branch password
+        git_commit custom_fields source ci_url
       ].freeze
 
       def avialable_upload_app_params(params)
         UPLOAD_APP_PARAMS_KEYS.each_with_object({}) do |key, obj|
           value = params.fetch(key.to_sym, ask: false)
           value = JSON.dump(value) if key == 'custom_fields' && value
+          value = detect_ci_url(params) if key == 'ci_url'
+          value = detect_source(params) if key == 'source'
           obj[key.to_sym] = value if value && !value.empty?
         end
       end
@@ -178,6 +181,40 @@ module Fastlane
         return [] unless params[:hide_user_token]
 
         [:token]
+      end
+
+      def detect_source(params)
+        return 'jenkins' if jenkins?
+        return 'gitlab-ci' if gitlab?
+
+        params[:source]
+      end
+
+      def detect_ci_url(params)
+        return params[:ci_url] if params[:ci_url]
+
+        if ENV['BUILD_URL']
+          # Jenkins
+          return ENV['BUILD_URL']
+        elsif ENV['CI_JOB_URL']
+          # Gitlab >= 11.1, Runner 0.5
+          return ENV['CI_JOB_URL']
+        elsif ENV['CI_PROJECT_URL']
+          # Gitlab >= 8.10, Runner 0.5
+          return "#{ENV['CI_PROJECT_URL']}/-/jobs/#{ENV['CI_BUILD_ID']}"
+        end
+      end
+
+      def jenkins?
+        %w(JENKINS_URL JENKINS_HOME).each do |current|
+          return true if ENV.key?(current)
+        end
+
+        return false
+      end
+
+      def gitlab?
+        ENV.key?('GITLAB_CI')
       end
     end
   end
