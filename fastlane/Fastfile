@@ -8,6 +8,15 @@ lane :version_check do
   )
 end
 
+lane :sync_devices do
+  zealot_sync_devices(
+    endpoint: 'http://localhost:3000',
+    token: '...',
+    username: '...',
+    team_id: '...'
+  )
+end
+
 lane :upload_app do
   zealot(
     endpoint: 'http://localhost:3000',

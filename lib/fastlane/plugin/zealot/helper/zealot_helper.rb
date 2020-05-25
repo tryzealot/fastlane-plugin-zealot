@@ -46,7 +46,6 @@ module Fastlane
 
         print_table(form, title: 'zealot', hidden_keys: hidden_keys(params))
 
-        exit 1
         endpoint = params[:endpoint]
         UI.success("Uploading to #{endpoint} ...")
         connection = make_connection(params[:endpoint], params[:verify_ssl])
@@ -134,6 +133,29 @@ module Fastlane
             git_commit: git_commit
           }
         end
+      end
+
+      #######################################
+
+      def sync_deivce(params, device)
+        udid = device.udid
+        name = device.name
+
+        endpoint = params[:endpoint]
+        connection = make_connection(params[:endpoint], params[:verify_ssl])
+        connection.put do |req|
+          req.url("/api/devices/#{udid}")
+          req.options.timeout = params[:timeout]
+          req.body = { token: params[:token], name: name }
+        end
+      end
+
+      def build_table_data(params, devices)
+        data = {
+          'Endpoint' => params[:endpoint],
+          'Token' => params[:token],
+          "Devices (#{devices.size})" => devices.map {|d| "#{d.name}: #{d.udid}"}.join("\n")
+        }
       end
 
       #####################################
