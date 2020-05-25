@@ -31,10 +31,9 @@ module Fastlane
       end
 
       def self.parse_response(response, upload_url, fail_on_error)
-        return show_error("Error uploading to Zealot: empty response", fail_on_error) unless response
+        return unless response
 
         UI.verbose response.body.to_s
-
         if response.status != 201
           return show_error("Error uploading to Zealot [#{response.status}]: #{response.body}", fail_on_error)
         end
