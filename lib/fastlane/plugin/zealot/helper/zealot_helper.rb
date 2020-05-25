@@ -46,7 +46,6 @@ module Fastlane
 
         print_table(form, title: 'zealot', hidden_keys: hidden_keys(params))
 
-        exit 1
         endpoint = params[:endpoint]
         UI.success("Uploading to #{endpoint} ...")
         connection = make_connection(params[:endpoint], params[:verify_ssl])
@@ -136,7 +135,29 @@ module Fastlane
         end
       end
 
+      #######################################
+
+      def sync_deivce(params, device)
+        body = { token: params[:token], name: device.name }
+        http_request(:put, "/api/devices/#{device.udid}", body, params)
+      end
+
+      def build_table_data(params, devices)
+        data = {
+          'Endpoint' => params[:endpoint],
+          'Token' => params[:token],
+          "Devices (#{devices.size})" => devices.map {|d| "#{d.name}: #{d.udid}"}.join("\n")
+        }
+      end
+
       #####################################
+
+      def http_request(method, uri, body, params)
+        connection = make_connection(params[:endpoint], params[:verify_ssl])
+        connection.run_request(method, uri, body, nil) do |req|
+          req.options.timeout = params[:timeout] if params[:timeout]
+        end
+      end
 
       def make_connection(endpoint, verify_ssl = true)
         require 'faraday'
