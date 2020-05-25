@@ -8,7 +8,7 @@
 
 ### 新增
 
-- [action]  新增 `zealot_sync_device` 用来同步 AdHoc 的 iOS 测试设备名称
+- [action] 新增 `zealot_sync_device` 用来同步 AdHoc 的 iOS 测试设备名称
 - [action] `zealot` 新增自动获取上传渠道及 CI URL 逻辑
 
 ## [0.3.0] (2020-05-21)
@@ -50,7 +50,7 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.4.0...HEAD
-[0.4.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...v0.4.0
+[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...v0.4.1
 [0.3.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.0...v0.2.0
