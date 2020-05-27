@@ -138,7 +138,7 @@ module Fastlane
       #######################################
 
       def sync_deivce(params, device)
-        body = { token: params[:token], name: device.name }
+        body = { token: params[:token], name: device.name, model: device.model }
         http_request(:put, "/api/devices/#{device.udid}", body, params)
       end
 
