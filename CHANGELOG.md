@@ -4,6 +4,12 @@
 
 > 如下罗列的变更是还未发布的列表
 
+## [0.5.0] (2020-05-27)
+
+### 新增
+
+- [action] `zealot_sync_device` 同步时增加手机型号
+
 ## [0.4.1] (2020-05-25)
 
 ### 新增
@@ -50,7 +56,8 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.4.1...HEAD
+[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...v0.4.1
 [0.3.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.1.0...v0.2.0

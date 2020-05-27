@@ -46,3 +46,11 @@ lane :upload_debug_file do
     overwrite: true
   )
 end
+
+lane :sync do
+  zealot_sync_devices(
+    endpoint: 'http://localhost:3000',
+    token: '320bacf980e20e7b058be2d77154dc53',
+    username: 'icyleaf@ews.im'
+  )
+end
