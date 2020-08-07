@@ -7,6 +7,14 @@ module Fastlane
   module Actions
     module SharedValues
       ZEALOT_VERSION_EXISTED = :ZEALOT_VERSION_EXISTED
+      ZEALOT_LATEST_RELEASE_ID = :ZEALOT_LATEST_RELEASE_ID
+      ZEALOT_LATEST_RELEASE_VERSION = :ZEALOT_LATEST_RELEASE_VERSION
+      ZEALOT_LATEST_BUILD_VERSION = :ZEALOT_LATEST_VERSION
+      ZEALOT_LATEST_VERSION = :ZEALOT_LATEST_VERSION
+      ZEALOT_LATEST_RELEASE_URL = :ZEALOT_LATEST_RELEASE_URL
+      ZEALOT_LATEST_QRCODE_URL = :ZEALOT_LATEST_QRCODE_URL
+      ZEALOT_LATEST_INSTALL_URL = :ZEALOT_LATEST_INSTALL_URL
+      ZEALOT_LATEST_CONTEXT = :ZEALOT_LATEST_CONTEXT
     end
 
     class ZealotVersionCheckAction < Action
@@ -31,6 +39,17 @@ module Fastlane
         Actions.lane_context[SharedValues::ZEALOT_VERSION_EXISTED] = is_existed
 
         if is_existed
+          context = response.body
+
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_RELEASE_ID] = context['id']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_RELEASE_VERSION] = context['release_version']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_BUILD_VERSION] = context['build_version']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_VERSION] = context['version']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_RELEASE_URL] = context['release_url']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_INSTALL_URL] = context['install_url']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_QRCODE_URL] = context['qrcode_url']
+          Actions.lane_context[SharedValues::ZEALOT_LATEST_CONTEXT] = context
+
           UI.important 'Found app version, you can skip upload it'
         else
           UI.success 'Not found app version, you can upload it'
@@ -89,6 +108,12 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :verify_ssl,
                                        env_name: 'ZEALOT_VERIFY_SSL',
                                        description: 'Should verify SSL of zealot service',
+                                       optional: true,
+                                       default_value: true,
+                                       type: Boolean),
+          FastlaneCore::ConfigItem.new(key: :hide_user_token,
+                                       env_name: 'ZEALOT_HIDE_USER_TOKEN',
+                                       description: 'replase user token to *** to keep secret',
                                        optional: true,
                                        default_value: true,
                                        type: Boolean),
