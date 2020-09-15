@@ -14,7 +14,7 @@ module Fastlane
 
       def self.run(params)
         file = generate_zip_file(params)
-        UI.user_error! "Something wrong with compress debug file" unless file
+        UI.user_error! "Something wrong with compressed debug file" unless file
 
         response = upload_debug_file(params, file)
         if parse_response(response, params[:endpoint], params[:fail_on_error])
@@ -27,32 +27,40 @@ module Fastlane
           next unless value = params[key]
           obj[key] = value
         end
-        path = new_params.delete(:path)
-        platform = new_params[:platform]
 
-        case platform
+        if (zip_file = params[:zip_file]) && File.file?(zip_file)
+          UI.user_error! "The zip file can not be readable: #{zip_file}" unless File.readable?(zip_file)
+
+          UI.verbose "Using given zip file: #{zip_file}"
+          return zip_file
+        end
+
+        platform = new_params.delete(:platform)
+        unless platform
+          UI.user_error!("Missing platform without `zip_file` param, avaiable value are #{PLATFORM.join(',')}.")
+        end
+
+        path = new_params.delete(:path)
+        case platform.downcase.to_sym
         when :ios, :mac, :macos, :osx
           generate_dsym_zip(new_params, path)
         when :android
           generate_proguard_zip(new_params, path)
         else
-          UI.user_error!("No match value of platform: #{value}, avaiable value are #{PLATFORM.join(',')}.")
+          UI.user_error!("No match value of platform: #{platform}, avaiable value are #{PLATFORM.join(',')}.")
         end
       end
 
-      def self.generate_dsym_zip(params, path)
-        params[:archive_path] = if path
-          path
-        else
-          Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE] || Fastlane::Actions::DsymAction::ARCHIVE_PATH
-        end
+      def self.generate_dsym_zip(params, archive_path)
+        UI.user_error!('Missing the scheme name of iOS app') if params[:xcode_scheme].to_s.empty?
 
+        params[:archive_path] = archive_path || Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE] || Fastlane::Actions::DsymAction::ARCHIVE_PATH
         params[:scheme] = params.delete(:xcode_scheme)
         Fastlane::Actions::DsymAction.run(params)
       end
 
-      def self.generate_proguard_zip(params, path)
-        params[:app_path] = path if path && !path.empty?
+      def self.generate_proguard_zip(params, app_path)
+        params[:app_path] = app_path unless app_path.to_s.empty?
         params[:build_type] = params.delete(:android_build_type)
         params[:flavor] = params.delete(:android_flavor)
         Fastlane::Actions::ProguardAction.run(params)
@@ -66,9 +74,29 @@ module Fastlane
           return show_error("Error uploading to Zealot: #{response.body}", fail_on_error)
         end
 
+        print_uploaded_data(body)
+
         true
       end
       private_class_method :parse_response
+
+      def self.print_uploaded_data(data)
+        rows = data.each_with_object({}) do |(key, value), obj|
+                if key == 'metadata'
+                  obj["#{key} (#{value.size})"] = value.each_with_object([]) do |item, obj|
+                              obj << item.map {|k, v| "#{k}: #{v}" }.join("\n")
+                            end.join("\n-------------------------\n")
+                else
+                  obj[key] = value.to_s
+                end
+              end
+
+        puts Terminal::Table.new(
+          title: 'Uploaded debug file information'.green,
+          rows: rows
+        )
+      end
+      private_class_method :print_uploaded_data
 
       #####################################################
       # @!group Documentation
@@ -94,15 +122,21 @@ module Fastlane
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :channel_key,
                                        env_name: 'ZEALOT_CHANNEL_KEY',
-                                       description: 'The key of app\'s channel',
+                                       description: 'Any channel key of app',
+                                       verify_block: proc do |value|
+                                        UI.user_error!("No channel key of app, pass using `channel_key: 'channel_key'`") if value.nil? || value.empty?
+                                      end,
+                                       type: String),
+          FastlaneCore::ConfigItem.new(key: :zip_file,
+                                       env_name: 'DF_DSYM_ZIP_FILE',
+                                       description: "Using given the path of zip file to direct upload",
+                                       optional: true,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :platform,
                                        env_name: 'ZEALOT_PLATFORM',
                                        description: "The name of platfrom, avaiable value are #{PLATFORM.join(',')}",
-                                       verify_block: proc do |value|
-                                         UI.user_error!("No match value of platform: #{value}") unless PLATFORM.include?(value)
-                                       end,
-                                       type: :Symbol),
+                                       optional: true,
+                                       type: String),
           FastlaneCore::ConfigItem.new(key: :path,
                                        env_name: 'ZEALOT_PATH',
                                        description: 'The path of debug file (iOS/macOS is archive path for Xcode, Android is path for app project)',
@@ -138,12 +172,12 @@ module Fastlane
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :release_version,
                                        env_name: 'ZEALOT_RELEASE_VERSION',
-                                       description: 'The release version of app',
+                                       description: 'The release version of app (Android needs)',
                                        optional: true,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :build_version,
                                        env_name: 'ZEALOT_BUILD_VERSION',
-                                       description: 'The build version of app',
+                                       description: 'The build version of app (Android needs)',
                                        optional: true,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :overwrite,
@@ -177,10 +211,27 @@ module Fastlane
             endpoint: "...",
             token: "...",
             channel_key: "...",
+            platform: :ios,
+            xcode_scheme: "AppName"
+          )',
+          'zealot_debug_file(
+            endpoint: "...",
+            token: "...",
+            channel_key: "...",
+            platform: :android,
+            android_build_type: "release",
+            android_flavor: "google_play",
+            release_version: "1.1.0",
+            build_version: "1",
+          )',
+          'zealot_debug_file(
+            endpoint: "...",
+            token: "...",
+            channel_key: "...",
             zip_file: "...",
-            release_version: "...",
-            build_version: "..."
-          )'
+            release_version: "1.1.0",
+            build_version: "1",
+          )',
         ]
       end
 

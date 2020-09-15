@@ -2,9 +2,9 @@ lane :version_check do
   zealot_version_check(
     endpoint: 'http://localhost:3000',
     token: '...',
-    bundle_id: 'com.example.app.name',
-    release_version: '1.0.0',
-    build_version: '1'
+    channel_key: '...',
+    bundle_id: '...',
+    git_commit: last_git_commit[:commit_hash]
   )
 end
 
@@ -27,15 +27,17 @@ lane :upload_app do
 end
 
 lane :upload_debug_file do
+  # 上传 iOS dSYM 调试文件
   zealot_debug_file(
     endpoint: 'http://localhost:3000',
     token: '...',
     channel_key: '...',
     platform: :ios,
     xcode_scheme: 'AppName',
-    overwrite: true
+    verify_ssl: false
   )
 
+  # 上传 Android Proguard 调试文件
   zealot_debug_file(
     endpoint: 'http://localhost:3000',
     token: '...',
@@ -43,14 +45,27 @@ lane :upload_debug_file do
     platform: :android,
     android_build_type: 'release',
     android_flavor: 'store',
+    release_version: '1.1.0',
+    build_version: '1',
     overwrite: true
+  )
+
+  # 上传指定 zip file 调试文件
+  zealot_debug_file(
+    endpoint: 'http://localhost:3000',
+    token: '...',
+    channel_key: '...',
+    zip_file: 'path/to/your/zip_file',
+    release_version: '1.1.0',
+    build_version: '1',
+    verify_ssl: false
   )
 end
 
 lane :sync do
   zealot_sync_devices(
     endpoint: 'http://localhost:3000',
-    token: '320bacf980e20e7b058be2d77154dc53',
-    username: 'icyleaf@ews.im'
+    token: '...',
+    username: 'apple_developer_email'
   )
 end
