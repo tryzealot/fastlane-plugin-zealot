@@ -1,4 +1,5 @@
 *.gem
+*.zip
 Gemfile.lock
 
 ## Documentation cache and generated files:
