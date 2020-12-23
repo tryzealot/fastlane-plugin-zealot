@@ -4,6 +4,24 @@
 
 > 如下罗列的变更是还未发布的列表
 
+## [0.7.0] (2020-12-23)
+
+### 新增
+
+- [action] `zealot_debug_file` 无需设置 path 和 scheme 自动获取 [gym](https://docs.fastlane.tools/actions/gym/) 的 archive path 值
+- [action] `zealot_debug_file`: 支持使用给定 zip_file 上传
+- [action] `zealot_debug_file`: 上传后显示解析的信息
+
+### 变更
+
+- [action] `zealot_debug_file`: `platform` 参数类型修改为 String
+
+## [0.6.0] (2020-08-07)
+
+### 新增
+
+- [action] `zealot_version_check` 新增返回数据让外部使用
+
 ## [0.5.0] (2020-05-27)
 
 ### 新增
@@ -56,7 +74,9 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.5.0...HEAD
+[未发布]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.3.0...v0.4.1
 [0.3.0]: https://github.com/getzealot/fastlane-plugin-zealot/compare/v0.2.0...v0.3.0

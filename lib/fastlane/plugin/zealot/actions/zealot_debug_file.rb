@@ -209,6 +209,12 @@ module Fastlane
             endpoint: "...",
             token: "...",
             channel_key: "...",
+            platform: :ios
+          )',
+          'zealot_debug_file(
+            endpoint: "...",
+            token: "...",
+            channel_key: "...",
             platform: :ios,
             xcode_scheme: "AppName"
           )',
