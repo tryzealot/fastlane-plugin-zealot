@@ -101,7 +101,7 @@ module Fastlane
       #####################################################
 
       def self.description
-        'Upload a new build to Zealot'
+        'Upload dSYM/Proguard files to Zealot which it provides a self-host Over The Air Server for deployment of Android and iOS apps.'
       end
 
       def self.available_options
