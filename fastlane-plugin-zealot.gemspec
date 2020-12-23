@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   # since this would cause a circular dependency
 
   spec.add_dependency 'faraday', '>= 1.0.1'
-  spec.add_dependency 'fastlane-plugin-debug_file', '>= 0.2.1'
+  spec.add_dependency 'fastlane-plugin-debug_file', '>= 0.3.0'
 
   spec.add_development_dependency('pry')
   spec.add_development_dependency('bundler')

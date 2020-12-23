@@ -36,8 +36,8 @@ module Fastlane
         end
 
         platform = new_params.delete(:platform)
-        unless platform
-          UI.user_error!("Missing platform without `zip_file` param, avaiable value are #{PLATFORM.join(',')}.")
+        if !platform && Fastlane::Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+          return generate_dsym_zip(new_params, nil)
         end
 
         path = new_params.delete(:path)
@@ -52,8 +52,6 @@ module Fastlane
       end
 
       def self.generate_dsym_zip(params, archive_path)
-        UI.user_error!('Missing the scheme name of iOS app') if params[:xcode_scheme].to_s.empty?
-
         params[:archive_path] = archive_path || Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE] || Fastlane::Actions::DsymAction::ARCHIVE_PATH
         params[:scheme] = params.delete(:xcode_scheme)
         Fastlane::Actions::DsymAction.run(params)
@@ -71,7 +69,7 @@ module Fastlane
 
         UI.verbose response.body.to_s
         if (body = response.body) && (error = body['error'])
-          return show_error("Error uploading to Zealot: #{response.body}", fail_on_error)
+          return show_error("Error uploading to Zealot[#{response.status}]: #{response.body}", fail_on_error)
         end
 
         print_uploaded_data(body)
@@ -124,8 +122,8 @@ module Fastlane
                                        env_name: 'ZEALOT_CHANNEL_KEY',
                                        description: 'Any channel key of app',
                                        verify_block: proc do |value|
-                                        UI.user_error!("No channel key of app, pass using `channel_key: 'channel_key'`") if value.nil? || value.empty?
-                                      end,
+                                         UI.user_error!("No channel key of app, pass using `channel_key: 'channel_key'`") if value.nil? || value.empty?
+                                       end,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :zip_file,
                                        env_name: 'DF_DSYM_ZIP_FILE',
