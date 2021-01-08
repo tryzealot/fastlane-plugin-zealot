@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = 'icyleaf.cn@gmail.com'
 
   spec.summary       = 'Upload IPA/APK/dSYM/Proguard files to Zealot which it provides a self-host Over The Air Server for deployment of Android and iOS apps.'
-  spec.homepage      = "https://github.com/getzealot/fastlane-plugin-zealot"
+  spec.homepage      = "https://github.com/tryzealot/fastlane-plugin-zealot"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)

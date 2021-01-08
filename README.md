@@ -2,7 +2,7 @@
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-zealot)
 
-上传移动应用（iPhone、Android）到 [Zealot](https://github.com/getzealot/zealot) 自建 App 分发系统。
+上传移动应用（iPhone、Android）到 [Zealot](https://github.com/tryzealot/zealot) 自建 App 分发系统。
 
 > Zealot 是一个开源、可自建服务的移动应用上传没有如此简单、解放开发打包的烦恼，轻松放权给测试、产品、运营等使用 App 的人员，深度与 Jenkins 和 Gitlab 集成。
 
