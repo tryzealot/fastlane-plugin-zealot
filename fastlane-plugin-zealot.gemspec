@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('rubocop', '0.49.1')
   spec.add_development_dependency('rubocop-require_tools')
   spec.add_development_dependency('simplecov')
-  spec.add_development_dependency('fastlane', '>= 2.137.0')
+  spec.add_development_dependency('fastlane', '>= 2.172.0')
 end
