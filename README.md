@@ -20,7 +20,7 @@ $ fastlane add_plugin zealot
 
 ### zealot
 
-上传 iOS/Android App 至 Zealot 系统，插件会通过参数和 CI 系统自动获取很多辅助信息。包括但不仅限于：
+上传 iOS (app/ipa)、Android (apk/abb) App 至 Zealot 系统，插件会通过参数和 CI 系统自动获取很多辅助信息。包括但不仅限于：
 
 - 使用 gym 或 gradle 打包生成的 app 文件路径
 - 解析应用获取的应用名称、打包类型

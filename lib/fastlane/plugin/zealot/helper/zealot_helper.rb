@@ -41,9 +41,6 @@ module Fastlane
 
       def upload_app(params)
         form = upload_app_params(params)
-        # recommand generate collect changelog plugin: https://github.com/icyleaf/fastlane-plugin-ci_changelog
-        form[:changelog] = changelog_raw if changelog_raw = ENV['CICL_CHANGLOG']
-
         print_table(form, title: 'zealot', hidden_keys: hidden_keys(params))
 
         endpoint = params[:endpoint]

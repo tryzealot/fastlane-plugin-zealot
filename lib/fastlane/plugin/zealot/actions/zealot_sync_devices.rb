@@ -63,7 +63,7 @@ module Fastlane
       #####################################################
 
       def self.description
-        'Check app version exists from Zealot'
+        'Sync ios devices list to Zealot'
       end
 
       def self.available_options

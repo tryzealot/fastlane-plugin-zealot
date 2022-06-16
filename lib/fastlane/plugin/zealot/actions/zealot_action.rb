@@ -57,7 +57,7 @@ module Fastlane
       #####################################################
 
       def self.description
-        'Upload IPA/APK files to Zealot which it provides a self-host Over The Air Server for deployment of Android and iOS apps.'
+        'Upload a ipa, apk and abb file to Zealot which it provides a self-host over the air server for deployment of Android and iOS apps.'
       end
 
       def self.available_options
@@ -96,6 +96,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :changelog,
                                        env_name: 'ZEALOT_CHANGELOG',
                                        description: 'The changelog of app',
+                                       default_value: ENV['CI_CHANGELOG'],
                                        optional: true,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :slug,
@@ -123,6 +124,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :custom_fields,
                                        env_name: 'ZEALOT_CUSTOM_FIELDS',
                                        description: 'The key-value hash of custom fields',
+                                       default_value: '[]',
                                        optional: true,
                                        type: Array),
           FastlaneCore::ConfigItem.new(key: :password,
