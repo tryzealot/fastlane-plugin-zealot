@@ -52,7 +52,7 @@ module Fastlane
           req.body = form
         end
       rescue Faraday::ConnectionFailed
-        show_error('Can not connecting to Zealot', params[:fail_on_error])
+        show_error('Can not connecting to Zealot service, make sure it be health to upload.', params[:fail_on_error])
       rescue Faraday::TimeoutError
         show_error('Uploading build to Zealot timed out ⏳', params[:fail_on_error])
       end
