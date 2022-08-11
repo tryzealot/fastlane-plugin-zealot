@@ -13,6 +13,9 @@ module Fastlane
       def self.run(params)
         require 'spaceship'
 
+        UI.warn('Zealot v4.5.0 starts to support Apple developer features to enable automatic synchronization of test devices.')
+        UI.warn('Link to view detail: https://zealot.ews.im/#/apple_team')
+
         all_platforms = Set[params[:platform]]
         supported_platforms = all_platforms.select { |platform| self.is_supported?(platform.to_sym) }
 
