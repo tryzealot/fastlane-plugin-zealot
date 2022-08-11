@@ -4,11 +4,23 @@
 
 > 如下罗列的变更是还未发布的列表
 
+## [0.9.0] (2022-08-11)
+
+### 变更
+
+- [action] `zealot_sync_devices`: 推荐使用 zealot 4.5.0 新增的苹果开发者自动管理
+
+### 新增
+
+## [0.8.0] (2021-12-28)
+
+- [action] `zealot_sync_devices`: 使用 Apple API Key 同步测试设备并更新设备备注
+
 ## [0.7.1] (2020-12-23)
 
 ### 新增
 
-- [action] `zealot_debug_file` 无需设置 path 和 scheme 自动获取 [gym](https://docs.fastlane.tools/actions/gym/) 的 archive path 值
+- [action] `zealot_debug_file`: 无需设置 path 和 scheme 自动获取 [gym](https://docs.fastlane.tools/actions/gym/) 的 archive path 值
 - [action] `zealot_debug_file`: 支持使用给定 zip_file 上传
 - [action] `zealot_debug_file`: 上传后显示解析的信息
 
@@ -74,8 +86,10 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.7.0...HEAD
-[0.7.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.6.0...v0.7.0
+[未发布]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.7.1...v0.8.0
+[0.7.1]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.6.0...v0.7.1
 [0.6.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.3.0...v0.4.1
