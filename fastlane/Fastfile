@@ -69,3 +69,8 @@ lane :sync do
     username: 'apple_developer_email'
   )
 end
+
+
+lane :test_update do
+
+end
