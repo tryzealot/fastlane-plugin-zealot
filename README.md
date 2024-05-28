@@ -1,12 +1,14 @@
 # fastlane-plugin-zealot
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-zealot)
+[![English document](https://img.shields.io/badge/Document-English-blue.svg)](https://zealot.ews.im/docs/developer-guide/fastlane)
+
 
 上传移动应用（iPhone、Android）到 [Zealot](https://github.com/tryzealot/zealot) 自建 App 分发系统。
 
-> Zealot 是一个开源自部署移动应用分发平台，提供 iOS、Android SDK、fastlane 等丰富组件库，打包分发流程、上传应用竟然如此简单、解决开发人员频繁打包的烦恼 🖖
+fastlane-plugin-zealot provides upload app, debug_file and version check actions to [Zealot](https://github.com/tryzealot/zealot).
 
-## 快速上手
+## 快速上手 Quick Start
 
 这是一个 [_fastlane_](https://github.com/fastlane/fastlane) 插件。如果要使用 `fastlane-plugin-zealot` 可通过下面方法添加到 fastlane 体系中：
 
