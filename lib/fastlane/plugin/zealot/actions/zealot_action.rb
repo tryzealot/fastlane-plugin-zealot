@@ -57,7 +57,7 @@ module Fastlane
       #####################################################
 
       def self.description
-        'Upload a ipa, apk and abb file to Zealot which it provides a self-host over the air server for deployment of Android and iOS apps.'
+        'Upload a application file to Zealot which it provides a self-host over the air server for deployment of Android, iOS, macOS, Windows and Linux apps.'
       end
 
       def self.available_options
@@ -81,7 +81,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :file,
                                        env_name: 'ZEALOT_FILE',
                                        description: 'The path of app file. Optional if you use the `gym`, `ipa`, `xcodebuild` or `gradle` action. ',
-                                       default_value: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] || Dir['*.ipa'].last || Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH] || Dir['*.apk'].last,
+                                       default_value: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] || Dir['*.ipa'].last || Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH] || Dir['*.apk'].last || Dir['*.exe'].last || Dir['*'].last,
                                        verify_block: proc do |value|
                                          UI.user_error!("Couldn't pass empty to file") if value.nil? || value.empty?
                                          UI.user_error!("Couldn't find file at path '#{value}'") unless File.exist?(value)

@@ -3,8 +3,7 @@
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-zealot)
 [![English document](https://img.shields.io/badge/Document-English-blue.svg)](https://zealot.ews.im/docs/developer-guide/fastlane)
 
-
-上传移动应用（iPhone、Android）到 [Zealot](https://github.com/tryzealot/zealot) 自建 App 分发系统。
+上传任何应用文件（iPhone、Android，macOS，Windows 和 Linux）到 [Zealot](https://github.com/tryzealot/zealot) 自建 App 分发系统。
 
 fastlane-plugin-zealot provides upload app, debug_file and version check actions to [Zealot](https://github.com/tryzealot/zealot).
 
@@ -22,7 +21,7 @@ $ fastlane add_plugin zealot
 
 ### zealot
 
-上传 iOS (app/ipa)、Android (apk/abb) App 至 Zealot 系统，插件会通过参数和 CI 系统自动获取很多辅助信息。包括但不仅限于：
+上传 iOS (app/ipa)、Android (apk/abb)，macOS（Zip 压缩后的 app 文件），Windows（exe）和 Linux App 至 Zealot 系统，插件会通过参数和 CI 系统自动获取很多辅助信息。包括但不仅限于：
 
 - 使用 gym 或 gradle 打包生成的 app 文件路径
 - 解析应用获取的应用名称、打包类型

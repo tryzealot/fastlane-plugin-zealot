@@ -1,8 +1,12 @@
+ENDPOINT = 'https://tryzealot.ews.im'
+TOKEN = '2c6b9e0d93e4e0752e190788adccf97c'
+CHANNEL_KEY = '03a38020e97f0ae4c6f70979552b2674'
+
 lane :version_check do
   zealot_version_check(
-    endpoint: 'http://localhost:3000',
-    token: '...',
-    channel_key: '...',
+    endpoint: ENDPOINT,
+    token: TOKEN,
+    channel_key: CHANNEL_KEY,
     bundle_id: '...',
     git_commit: last_git_commit[:commit_hash]
   )
@@ -10,8 +14,8 @@ end
 
 lane :sync_devices do
   zealot_sync_devices(
-    endpoint: 'http://localhost:3000',
-    token: '...',
+    endpoint: ENDPOINT,
+    token: TOKEN,
     username: '...',
     team_id: '...'
   )
@@ -19,19 +23,20 @@ end
 
 lane :upload_app do
   zealot(
-    endpoint: 'http://localhost:3000',
-    token: '...',
-    channel_key: '...',
-    file: 'app.apk'
+    endpoint: ENDPOINT,
+    token: TOKEN,
+    channel_key: CHANNEL_KEY,
+    changelog: 'This is a test changelog',
+    file: '/home/icyleaf/Development/ruby/app-info/spec/fixtures/apps/android-31.aab'
   )
 end
 
 lane :upload_debug_file do
   # 上传 iOS dSYM 调试文件
   zealot_debug_file(
-    endpoint: 'http://localhost:3000',
-    token: '...',
-    channel_key: '...',
+    endpoint: ENDPOINT,
+    token: TOKEN,
+    channel_key: CHANNEL_KEY,
     platform: :ios,
     xcode_scheme: 'AppName',
     verify_ssl: false
@@ -39,9 +44,9 @@ lane :upload_debug_file do
 
   # 上传 Android Proguard 调试文件
   zealot_debug_file(
-    endpoint: 'http://localhost:3000',
-    token: '...',
-    channel_key: '...',
+    endpoint: ENDPOINT,
+    token: TOKEN,
+    channel_key: CHANNEL_KEY,
     platform: :android,
     android_build_type: 'release',
     android_flavor: 'store',
@@ -52,9 +57,9 @@ lane :upload_debug_file do
 
   # 上传指定 zip file 调试文件
   zealot_debug_file(
-    endpoint: 'http://localhost:3000',
-    token: '...',
-    channel_key: '...',
+    endpoint: ENDPOINT,
+    token: TOKEN,
+    channel_key: CHANNEL_KEY,
     zip_file: 'path/to/your/zip_file',
     release_version: '1.1.0',
     build_version: '1',
@@ -64,13 +69,8 @@ end
 
 lane :sync do
   zealot_sync_devices(
-    endpoint: 'http://localhost:3000',
-    token: '...',
+    endpoint: ENDPOINT,
+    token: TOKEN,
     username: 'apple_developer_email'
   )
-end
-
-
-lane :test_update do
-
 end
