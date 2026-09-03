@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'fastlane_core/ui/ui'
+require 'faraday'
+require 'faraday/multipart'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
@@ -33,7 +35,7 @@ module Fastlane
           channel_key: params[:channel_key],
           release_version: params[:release_version],
           build_version: params[:build_version],
-          file: Faraday::UploadIO.new(file, 'application/octet-stream')
+          file: Faraday::Multipart::FilePart.new(file, 'application/octet-stream')
         }
       end
 
@@ -61,7 +63,7 @@ module Fastlane
         form = {
           token: params[:token],
           channel_key: params[:channel_key],
-          file: Faraday::UploadIO.new(params[:file], 'application/octet-stream')
+          file: Faraday::Multipart::FilePart.new(params[:file], 'application/octet-stream')
         }
 
         form.merge(avialable_upload_app_params(params))
@@ -158,7 +160,9 @@ module Fastlane
 
       def make_connection(endpoint, verify_ssl = true)
         require 'faraday'
-        require 'faraday_middleware'
+        require 'faraday/multipart'
+        require 'faraday/net_http'
+        require 'faraday/retry'
 
         Faraday.new(url: endpoint, ssl: { verify: verify_ssl }) do |builder|
           builder.request(:multipart)
@@ -174,7 +178,7 @@ module Fastlane
         rows.keys.each do |k|
           rows.delete(k) if remove_empty_value && !rows[k]
           rows.delete(k) if hidden_keys.include?(k.to_sym)
-          rows[k] = rows[k].path if rows[k].is_a?(UploadIO)
+          rows[k] = rows[k].path if rows[k].is_a?(Faraday::Multipart::FilePart)
         end
 
         puts Terminal::Table.new(
