@@ -1,8 +1,16 @@
 # 变更日志
 
+[English](CHANGELOG.en.md)
+
 ## [未发布]
 
 > 如下罗列的变更是还未发布的列表
+
+## [1.0.1] (2026-09-03)
+
+### 修复
+
+- [action] farady 1.0 和 2.0 的版本兼容问题
 
 ## [1.0.0] (2025-05-30)
 
@@ -78,7 +86,11 @@
 
 ## [未发布]
 
-[未发布]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.7.0...HEAD
+[未发布]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.8.0...v1.0.0
+[0.8.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.7.1...v0.8.0
+[0.7.1]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/tryzealot/fastlane-plugin-zealot/compare/v0.4.1...v0.5.0
